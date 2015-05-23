@@ -65,7 +65,7 @@ exports.list = function (req, res) {
 
 
 // getting an article by ID
-exports.articlesByID = function (req, res, next, id) {
+exports.articleByID = function (req, res, next, id) {
 	Article.findById(id)
 		.populate('creator', 'firstName lastName fullName')
 		.exec(function (err, article) {
