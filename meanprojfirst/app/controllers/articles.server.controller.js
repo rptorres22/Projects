@@ -126,8 +126,17 @@ exports.delete = function (req, res) {
 };
 
 
-
-
+// middleware to check if article is created by
+// the user.  only users that created the article
+// can update/delete them.
+exports.hasAuthorization = function (req, res, next) {
+	if (req.article.creator.id !== req.user.id) {
+		return res.status(403).send({
+			message: 'User is not authorized'
+		});
+	}
+	next();
+};
 
 
 

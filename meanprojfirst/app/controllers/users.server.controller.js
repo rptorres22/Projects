@@ -138,6 +138,7 @@ exports.saveOAuthUserProfile = function (req, profile, done) {
 // this will use the passport initiated req.isAuthenticated() method
 // to check whether a user is currently authenticated.
 // if user is not it will respond with an auth error and an http error
+// if it is it will move onto next middleware
 exports.requiresLogin = function(req, res, next) {
 	if (!req.isAuthenticated()) {
 		return res.status(401).send({
