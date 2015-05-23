@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:ng="http://angularjs.org">
 <head>
 	<title>
 		<%=title %>
@@ -15,9 +15,19 @@
 		<a href="/signin">Signin</a>
 	<% } %>
 	
-	<br>
-	
-	<img src="img/logo.png" alt="Logo">
+	<!-- <img src="img/logo.png" alt="Logo"> -->
 
+
+	<!-- 
+		how angular adds views/templates from a specified 
+		path by using ng-include directive
+	-->
+	<section ng-include="'example/views/example.client.view.html'"></section>
+
+
+	<script type="text/javascript" src="/lib/angular/angular.js"></script>
+	<script type="text/javascript" src="/example/example.client.module.js"></script>
+	<script type="text/javascript" src="/example/controllers/example.client.controller.js"></script>
+	<script type="text/javascript" src="/application.js"></script>
 </body>
 </html>
