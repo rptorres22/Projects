@@ -37,4 +37,6 @@ var ArticleSchema = new Schema({
 		ref: 'User'
 	}
 
-})
+});
+
+mongoose.model('Article', ArticleSchema);
