@@ -134,7 +134,19 @@ exports.saveOAuthUserProfile = function (req, profile, done) {
 };
 
 
+// to check if user is authenticated
+// this will use the passport initiated req.isAuthenticated() method
+// to check whether a user is currently authenticated.
+// if user is not it will respond with an auth error and an http error
+exports.requiresLogin = function(req, res, next) {
+	if (!req.isAuthenticated()) {
+		return res.status(401).send({
+			message: 'User is not logged in'
+		});
+	}
 
+	next();
+};
 
 
 /*
