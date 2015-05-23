@@ -7,8 +7,9 @@
 </head>
 <body>
 	
-	<% if ( userFullName ) { %>
-		<h2>Hello <%=userFullName%></h2>
+	
+	<% if ( user ) { %> <!-- this had userFullName -->
+		
 		<a href="/signout">Sign out</a>
 	<% } else { %>
 		<a href="/signup">Signup</a>
@@ -18,11 +19,30 @@
 	<!-- <img src="img/logo.png" alt="Logo"> -->
 
 
+	<!--
+		ng-view is part of the ngRoute module.  this directive tells AngularJS rouer
+		which DOM element to use to render the routing views.  When the user navigates to
+		a specified URL, AngularJS will render the template inside the DOM element marked with
+		this directive.
+	-->
+	<section ng-view></section>
+
+
+	<script type="text/javascript">
+		window.user = <%- user || 'null' %>;
+	</script>
+
+
 	<!-- 
+		the path locations are known because in app/config/express.js we defined app.use(express.static('./public'));
+		this is where all the static files will be sourced from.
+	-->
+	<!--
 		how angular adds views/templates from a specified 
 		path by using ng-include directive
 	-->
-	<section ng-include="'example/views/example.client.view.html'"></section>
+	<!-- <section ng-include="'example/views/example.client.view.html'"></section> -->
+	<!-- above was replaced by the ng-view directive -->
 
 
 	<script type="text/javascript" src="/lib/angular/angular.js"></script>
@@ -31,7 +51,11 @@
 
 	<script type="text/javascript" src="/example/example.client.module.js"></script>
 	<script type="text/javascript" src="/example/controllers/example.client.controller.js"></script>
+	<script type="text/javascript" src="/example/config/example.client.routes.js"></script>
 	
+	<script type="text/javascript" src="/users/users.client.module.js"></script>
+	<script type="text/javascript" src="/users/services/authentication.client.service.js"></script>
+
 
 	<script type="text/javascript" src="/application.js"></script>
 </body>

@@ -17,9 +17,10 @@ var mainApplicationModuleName = 'mean';
 
 	'example' - this is the example feature
 	'ngRoute' - this is angular-route
+	'users' - this is the users feature
 */
 
-var mainApplicationModule = angular.module(mainApplicationModuleName, ['ngRoute', 'example']);
+var mainApplicationModule = angular.module(mainApplicationModuleName, ['ngRoute', 'users', 'example']);
 
 
 
@@ -39,9 +40,16 @@ var mainApplicationModule = angular.module(mainApplicationModuleName, ['ngRoute'
 */
 mainApplicationModule.config(['$locationProvider', 
 	function ($locationProvider) {
-		$locationProvider.hashPrefix('!')''
+		$locationProvider.hashPrefix('!');
 	}
 ]);
+
+
+// to solve Facebook's redirect bug that adds a hash part to the application's URL
+//	after OAuth authentication round-trip.
+if (window.location.hash === '#_=_') 
+	window.location.hash = '#!';
+
 
 angular.element(document).ready(function() {
 	angular.bootstrap(document, [mainApplicationModuleName]);

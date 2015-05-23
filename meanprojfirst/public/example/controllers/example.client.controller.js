@@ -15,9 +15,9 @@
 
 */
 
-angular.module('example').controller('ExampleController', ['$scope', 
+angular.module('example').controller('ExampleController', ['$scope', 'Authentication',
 
-	function ($scope) {
-		$scope.name = 'MEAN Applilcation';
+	function ($scope, Authentication) {
+		$scope.name = Authentication.user ? Authentication.user.fullName : 'MEAN Application';
 	}
 ]);
