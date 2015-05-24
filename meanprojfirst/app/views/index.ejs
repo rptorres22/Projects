@@ -27,7 +27,10 @@
 	-->
 	<section ng-view></section>
 
-
+	<!-- 
+		express will provide the uesr object and this script will add that user
+		object to the window so that angular can use it
+	-->
 	<script type="text/javascript">
 		window.user = <%- user || 'null' %>;
 	</script>
@@ -43,10 +46,9 @@
 	-->
 	<!-- <section ng-include="'example/views/example.client.view.html'"></section> -->
 	<!-- above was replaced by the ng-view directive -->
-
-
 	<script type="text/javascript" src="/lib/angular/angular.js"></script>
 	<script type="text/javascript" src="/lib/angular-route/angular-route.js"></script>
+	<script type="text/javascript" src="/lib/angular-resource/angular-resource.js"></script>
 
 
 	<script type="text/javascript" src="/example/example.client.module.js"></script>

@@ -18,9 +18,11 @@ var mainApplicationModuleName = 'mean';
 	'example' - this is the example feature
 	'ngRoute' - this is angular-route
 	'users' - this is the users feature
+	'ngResource' - this is angular-resource that provides an easy way to communite with RESTful data source
+	'articles' - this is the articles feature
 */
 
-var mainApplicationModule = angular.module(mainApplicationModuleName, ['ngRoute', 'users', 'example']);
+var mainApplicationModule = angular.module(mainApplicationModuleName, ['ngResource', 'ngRoute', 'users', 'example', 'articles']);
 
 
 
