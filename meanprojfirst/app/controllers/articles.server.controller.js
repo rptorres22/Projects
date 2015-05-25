@@ -32,15 +32,21 @@ var getErrorMessage = function (err) {	//accepts a Mongoose error object
 // Creates a new article
 exports.create = function (req, res) {
 
+	// Create a new article object
 	var article = new Article(req.body);
+
+	// Set the article's 'creator' property
 	article.creator = req.user;
 
+	//try saving the article
 	article.save(function (err) {
 		if (err) {
+			// if error, send error message
 			return res.status(400).send({
 				message: getErrorMessage(err)
 			});
 		} else {
+			// send a JSON representation of the article
 			res.json(article);
 		}
 	});
@@ -49,15 +55,19 @@ exports.create = function (req, res) {
 
 // lists a collection of articles
 exports.list = function (req, res) {
+	// Use the model 'find' method to get a list of articles
 	Article.find()
 		.sort('-created')
 		.populate('creator', 'firstName lastName fullName')
 		.exec(function (err, articles) {
 			if (err) {
+				// If error, send error message
 				return res.status(400).send({
 					message: getErrorMessage(err)
 				});
 			} else {
+				console.log(articles);
+				// Send JSON representation of the article
 				res.json(articles);
 			}
 		});
@@ -73,6 +83,7 @@ exports.articleByID = function (req, res, next, id) {
 			if (!article)
 				return next(new Error('Failed to load article ' + id));
 
+			//console.log(article.creator.fullName);
 			req.article = article;
 			next();
 		});
@@ -90,11 +101,14 @@ exports.read = function (req, res) {
 // in the articleByID() middleware.  So you only need to update
 // the title and content fields.
 exports.update = function (req, res) {
+	// Get the article form the 'request' object
 	var article = req.article;
 
+	// update the article fields
 	article.title = req.body.title;
 	article.content = req.body.content;
 
+	// try saving the updated article
 	article.save(function (err) {
 		if (err) {
 			return res.status(400).send({

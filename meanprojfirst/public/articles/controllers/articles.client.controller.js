@@ -50,6 +50,7 @@ angular.module('articles').controller('ArticlesController', ['$scope', '$routePa
 		// a collection
 		$scope.find = function () {
 			$scope.articles = Articles.query();
+			console.log($scope.articles);
 		};
 
 		// retreive a single article based on the articleId route parameter
