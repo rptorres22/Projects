@@ -74,6 +74,7 @@ var UserSchema = new Schema({
 	//	enum: ['Admin', 'Owner', 'User'] // Predefiend enum validator - define set of strings that are available for this field.  Will only allow these
 	//}
 
+
 });
 
 

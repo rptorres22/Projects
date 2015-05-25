@@ -39,4 +39,8 @@ var ArticleSchema = new Schema({
 
 });
 
+// needed to add this to fix a bug when trying to return a list of articles
+// it was not populating the fullName virtual field of the 'User' object in this schema's 'creator'
+ArticleSchema.set('toJSON', { getters: true, virtuals: true });
+
 mongoose.model('Article', ArticleSchema);

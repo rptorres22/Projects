@@ -66,7 +66,6 @@ exports.list = function (req, res) {
 					message: getErrorMessage(err)
 				});
 			} else {
-				console.log(articles);
 				// Send JSON representation of the article
 				res.json(articles);
 			}
@@ -89,9 +88,10 @@ exports.articleByID = function (req, res, next, id) {
 		});
 };
 
-// req.articles should already be populated by articlesByID
+// req.article should already be populated by articlesByID
 // when a user hits a route that contains an article ID
 exports.read = function (req, res) {
+	//console.log(req.article);
 	res.json(req.article);
 }
 
