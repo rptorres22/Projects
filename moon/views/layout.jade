@@ -1,0 +1,24 @@
+doctype html
+html
+	head
+		link(rel='stylesheet', href='/stylesheets/bootstrap.css')
+		block head
+
+		block title
+	body
+	.container
+		ul.list-inline
+			li
+				strong
+					a(href="/Customers") List all Customers
+			li
+				a(href="/Customers/New") New Customer
+			li
+				strong
+					a(href="/Orders") List all orders
+			li
+				a(href="/Products") All Products
+			li
+				strong
+					a(href="/Feedbacks") All Feedbacks
+		block body

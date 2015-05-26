@@ -1,0 +1,23 @@
+extends layout.jade
+
+block title
+   title= title
+
+block body
+    h1 Item List
+    table.table-hover.table.table-striped
+     thead
+      tr
+       th Product ID
+       th Product Name
+       th Product Price
+       th Actions
+
+     tbody
+      each val in products
+       tr
+        td= val.product_id
+        td= val.name
+        td= val.default_price
+        td
+          a(href="/Products/Edit/" + val.product_id, class="btn btn-default btn-xs") Edit

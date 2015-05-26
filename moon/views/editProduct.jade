@@ -1,0 +1,20 @@
+extends layout.jade
+
+block title
+  title= title
+
+block body
+  h1 Edit Product
+  form(name="editProduct", action="/Products/Edit", method="post")
+    .form-group
+      input(type="hidden", value=product[0].product_id class="form-control", name="product_id")
+    .form-group
+      label(for="name") Product Name
+      input(type="text", value=product[0].name class="form-control", name="name")
+    .form-group
+      label(for="name") Default Product Price
+      input(type="number" step="any", value=product[0].default_price class="form-control", name="price")
+    .form-group
+      label(for="deleted") Status? (Deleted - 1, Active - 0)
+        input(type="text" value=product[0].status class="form-control" name="status")
+    button(type="submit", class="btn btn-success") Submit Changes

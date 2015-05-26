@@ -1,0 +1,30 @@
+extends layout.jade
+
+block title
+   title= title
+
+block body
+    h1 All Orders
+    table.table.table-striped
+     thead
+      tr
+       th First Name
+       th Last Name
+       th Platform
+       th Username
+       th Email
+       th $$
+       th Date
+       th Actions
+     tbody
+      each val in orders
+       tr
+        td= val.first_name
+        td= val.last_name
+        td= val.name
+        td= val.username
+        td= val.email
+        td= val.Total
+        td= val.date
+        td
+         a(href='/Orders/' + val.order_id, class="btn btn-default btn-xs") View order

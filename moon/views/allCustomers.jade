@@ -1,0 +1,28 @@
+extends layout.jade
+
+block title
+   title= title
+
+block body
+    h1 Customer List
+    a(href="/Customers/New", class="btn btn-primary") Add new Customer
+    br
+    br
+    table.table-hover.table.table-striped
+     thead
+      tr
+       th First Name
+       th Last Name
+       th Username
+       th Email
+       th Actions
+     tbody
+      each val in customers
+       tr
+        td= val.first_name
+        td= val.last_name
+        td= val.username
+        td= val.email
+        td
+         a(href='/Customers/' + val.customer_id, class="btn btn-default btn-xs") View customer
+       

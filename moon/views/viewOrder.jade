@@ -1,0 +1,78 @@
+extends layout
+
+block title
+	title= title
+
+block body
+	h1 View Order
+	a(href="/Orders/Edit/" + order[0].order_id, class="btn btn-default") Edit Order
+	| &nbsp; &nbsp;
+	a(href="/Customers/" + order[0].customer_id, class="btn btn-default") View customer
+	h3 Customer Details
+	- var total = 0
+	
+	table.table.table-striped
+		thead
+			tr
+				th First Name
+				th Last Name
+				th Email
+				th Username 
+		tbody
+      
+			tr
+				td= order[0].first_name
+				td= order[0].last_name
+				td= order[0].email
+				td= order[0].username
+	h3 Order Details
+	table.table.table-striped
+		thead
+			tr
+				th Date
+				th Platform
+				th Additional Cost
+				th Notes
+		tbody
+			tr
+				td= order[0].date
+				td= order[0].platform_name
+				td= order[0].additional_cost
+				td= order[0].order_notes
+
+	h3 Items Purchased
+	
+	table.table.table-striped
+		thead
+			tr
+				th Product Name
+				th Price
+				th Quantity
+				th Feedback Given
+				th Total
+				th Action
+		each val in order
+			tbody
+				tr
+					td= val.product_name
+					td= val.price
+					td= val.quantity
+					td
+						if val.feedback_message != 0 && val.feedback_message != null
+							| Yes
+						else
+							| No
+					td= val.price*val.quantity
+					td
+						a(href="/Orders/Item/" + val.order_details_id, class="btn btn-default btn-xs") Edit
+					- total += val.price*val.quantity
+	form(name="newItem", action="/Orders/Item/New/" + order[0].order_id, method="post")
+		button(type="submit", class="btn btn-primary") Add new Item
+	br
+	.alert.alert-success
+		strong Total:  
+		= "$  " + total
+		br
+		strong Grand Total:
+		= "$  " + (total + order[0].additional_cost)
+

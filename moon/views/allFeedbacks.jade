@@ -1,0 +1,27 @@
+extends layout.jade
+
+block title
+   title= title
+
+block body
+    h1 Feedback List
+    table.table.table-striped
+     thead
+      tr
+       th First Name
+       th Last Name
+       th Product Name
+       th Message
+       th Date
+       th Actions
+     tbody
+      each val in feedbacks
+       tr
+        td= val.first_name
+        td= val.last_name
+        td= val.product_name
+        td= val.feedback_message
+        td= val.date
+        td
+         a(href="/Orders/" + val.order_id, class="btn btn-default btn-xs") View Order
+       

@@ -1,0 +1,45 @@
+extends layout.jade
+
+block title
+	title= title
+
+block body
+	h1 Edit customer
+	form(name="editCustomer", action="/Customers/Edit/" + customer[0].customer_id, method="post")
+		input(type="hidden", name="customer_id", value=customer[0].customer_id)
+		.form-group
+			label(for="First Name") First Name:
+			input(type="text", class="form-control",rows="1" name="first_name" value=customer[0].first_name)
+		.form-group
+			label(for="Last Name") Last Name:
+			input(type="text", class="form-control",rows="1" name="last_name" value=customer[0].last_name)
+		.form-group
+			label(for="Email") Email:
+			input(type="email", class="form-control",rows="1" name="email" value=customer[0].email)
+		.form-group
+			label(for="Username") Username:
+			input(type="text", class="form-control",rows="1" name="username" value =customer[0].username)
+		.form-group
+			label(for="phone") Phone Number:
+			input(type="text", class="form-control",rows="1" name="phone_number" value =customer[0].phone_number)
+		.form-group
+			label(for="address") Address:
+			input(type="text", class="form-control",rows="1" name="address" value =customer[0].address)
+		.form-group
+			label(for="city") City:
+			input(type="text", class="form-control",rows="1" name="city" value=customer[0].city)
+		.form-group 
+			label(for="state") State:
+			input(type="text", class="form-control",rows="1" name="state" value=customer[0].state)
+		.form-group
+			label(for="zip") Zip:
+			input(type="text", class="form-control",rows="1" name="zip" value=customer[0].zip)
+		.form-group
+			label(for="zip") Country:
+			input(type="text", class="form-control",rows="1" name="country" value=customer[0].country)
+		.form-group
+			label(for="zip") Notes:
+			textarea(class="form-control" rows="3" name="notes")=customer[0].notes
+		button(type="submit", class="btn btn-success") Submit Changes
+		br
+		br

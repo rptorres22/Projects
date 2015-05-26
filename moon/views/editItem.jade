@@ -1,0 +1,50 @@
+extends layout.jade
+
+block title
+	title= title
+block head
+	link(rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css")
+	script(src="//code.jquery.com/jquery-1.10.2.js")
+	script(src="//code.jquery.com/ui/1.11.4/jquery-ui.js")
+block body
+	h1 Edit Item
+	form(name="editItem", action="/Orders/Item", method="post")
+		.form-group
+			input(type="hidden", value=item[0].order_details_id class="form-control", name="order_details_id")
+		.form-group
+			input(type="hidden", value=item[0].order_id class="form-control", name="order_id")
+			input(type="hidden", value=item[0].product_id class="form-control" id="product_id" name="product_id")
+		.form-group
+			label(for="product_id") Product Name
+			input(type="text", value=item[0].name class="form-control", id="product_name" name="product_name")
+		.form-group
+			label(for="price") Price
+			.input-group
+				span(class="input-group-addon") $
+				input(type="number" step="any", value=item[0].price class="form-control", id="product_price" name="product_price")
+		.form-group
+			label(for="quantity") Quantity
+			input(type="number", value=item[0].quantity class="form-control", name="quantity")
+		.form-group
+			label(for="Feedback_message") Feedback message
+			input(type="text", value=item[0].feedback_message class="form-control", name="feedback_message")
+		button(type="submit", class="btn btn-primary") Submit Item
+		script(type="text/javascript").
+			$(function() {
+				var data1 = JSON.parse('!{data}');
+				$( "#product_name" ).autocomplete({
+				minLength: 0,
+				source: data1,
+				focus: function( event, ui ) {
+					$( "#product_name" ).val( ui.item.name );
+					return false;
+					},
+					select: function( event, ui ) {
+					$( "#product_name" ).val( ui.item.name );
+					$( "#product_id" ).val( ui.item.product_id );
+					$ ("#product_price").val(ui.item.default_price)
+			 
+			        return false;
+			      } 
+				  });
+			  });

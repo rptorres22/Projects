@@ -1,0 +1,85 @@
+extends layout.jade
+
+block title
+	title= title
+
+block body
+
+	h1 View Customer
+	a(href="/Orders/New/" + customer[0].customer_id, class="btn btn-primary") Add new Order
+	|  &nbsp
+	a(href="/Customers/Edit/" + customer[0].customer_id, class="btn btn-default") Edit Customer
+	- var total = 0;
+	- var orderCounter = 0;
+	each order in orders
+		- total +=  order.Total;
+		- orderCounter+= 1;
+	table.table.table-striped
+		thead
+			tr
+				th First Name
+				th Last Name
+				th Email
+				th Customer ID
+				th Dollars spent
+				th Number of orders
+		tbody
+      
+			tr
+				td= customer[0].first_name
+				td= customer[0].last_name
+				td= customer[0].email
+				td
+					strong
+						=customer[0].customer_id
+				td= total
+				td= orderCounter
+
+	table.table.table-striped
+		thead
+			tr
+				th Username
+				th Phone
+				th Address
+				th City
+				th State
+				th ZIP code
+				th Country
+		tbody
+      
+			tr
+				td= customer[0].username
+				td= customer[0].phone_number
+				td= customer[0].address
+				td= customer[0].city
+				td= customer[0].state
+				td= customer[0].zip
+				td= customer[0].country
+	if customer[0].notes
+		br
+		h3 Notes
+		blockquote
+			p= customer[0].notes
+		br
+
+	h3 Orders
+
+	table.table.table-striped
+		thead
+			tr
+				th Order Date
+				th Platform
+				th Date
+				th Total
+				th Actions
+		tbody
+		each order in orders
+			tr
+				td= order.date
+				td= order.name
+				td= order.date
+				td= order.Total
+				td 
+					a(href="/Orders/" + order.order_id, class="btn btn-default btn-xs") View order
+
+

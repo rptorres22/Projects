@@ -1,0 +1,49 @@
+extends layout.jade
+
+block title
+   title= title
+
+    -var ebay = 0
+    -var etsy = 0
+    -var website = 0
+    -var total = 0
+
+
+    each val in numbers
+      if val.name == 'Ebay'
+        - ebay = ebay + val.DailyTotal
+      if val.name == 'Etsy'
+        - etsy = etsy + val.DailyTotal
+      if val.name == 'Website'
+        - website = website + val.DailyTotal
+
+    - total = ebay + etsy + website 
+
+
+block body
+    h1 Income
+    table.table.table-striped
+      thead
+        tr
+          th Total
+          th Website
+          th Ebay
+          th Etsy
+      tbody
+        tr
+          td=total
+          td= website
+          td= ebay
+          td= etsy
+    table.table.table-striped
+     thead
+      tr
+       th Date
+       th Platform
+       th Total
+     tbody
+      each val in numbers
+        tr
+          td= val.date
+          td= val.name
+          td= val.DailyTotal

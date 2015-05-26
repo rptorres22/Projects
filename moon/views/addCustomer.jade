@@ -1,0 +1,45 @@
+extends layout.jade
+
+block title
+	title= title
+
+block body
+	h1 Add new customer
+	form(name="newCustomer", action="/Customers/New", method="post")
+		.form-group
+			label(for="First Name") First Name:
+			input(type="text", class="form-control", name="first_name")
+		.form-group
+			label(for="Last Name") Last Name:
+			input(type="text", class="form-control", name="last_name")
+		.form-group
+			label(for="Email") Email:
+			input(type="email", class="form-control", name="email", required)
+		.form-group
+			label(for="Username") Username:
+			input(type="text", class="form-control", name="username", required)
+		.form-group
+			label(for="phone") Phone Number:
+			input(type="text", class="form-control", name="phone_number")
+		.form-group
+			label(for="address") Address:
+			input(type="text", class="form-control", name="address")
+		.form-group
+				label(for="city") City:
+				input(type="text", class="form-control", name="city")
+		.form-group 
+			div
+				label(for="state") State:
+				input(type="text", class="form-control", name="state")
+		.form-group
+			label(for="zip") Zip:
+			input(type="text", class="form-control", name="zip")
+		.form-group
+			label(for="zip") Country:
+			input(type="text", class="form-control", name="country")
+		.form-group
+			label(for="zip") Notes:
+			textarea(class="form-control" rows="3" name="notes")
+		button(type="submit", class="btn btn-primary") Add new Customer
+		br
+		br

@@ -1,0 +1,51 @@
+extends layout.jade
+
+block title
+	title= title
+block head
+	link(rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css")
+	script(src="/js/jquery-1.11.2.min.js")
+	script(src="//code.jquery.com/ui/1.11.4/jquery-ui.js")
+block body
+	h1 Edit Order
+	form(name="newOrder", action="/Orders/Edit", method="post")
+		.form-group
+			input(type="hidden", value=order[0].order_id, class="form-control", name ="order_id")
+		.form-group
+			input(type="hidden", value=order[0].customer_id class="form-control", name="customer_id")
+		.form-group
+			input(type="hidden", class="form-control", id="platform_id" name="platform_id", value=order[0].platform_id)
+			label(for="lastName") Platform Name:
+			input(type="text", class="form-control", id="platform_name", value=order[0].platform_name)
+		.form-group
+			label(for="date") Date:
+			input(type="date", value=order[0].date data-date-format="MM/DD/YYYY" class="form-control", name="date")
+		.form-group
+			input(type="hidden", value=order[0].promotion_code class="form-control", value=0, name="promotion_code")
+		.form-group
+			label(for="additional_cost") Additional Cost:
+			input(type="text", value=order[0].additional_cost class="form-control", name="additional_cost")
+		.form-group
+			label(for="order_notes") Order Notes:
+			input(type="text", value=order[0].notes class="form-control", name="notes")
+		button(type="submit", class="btn btn-success") Submit Changes
+		script(type="text/javascript").
+			$(function() {
+				var data1 = JSON.parse('!{platforms}');
+				console.log(data1);
+				$( "#platform_name" ).autocomplete({
+				minLength: 0,
+				source: data1,
+				focus: function( event, ui ) {
+					$( "#platform_name" ).val( ui.item.name );
+					return false;
+					},
+					select: function( event, ui ) {
+					$( "#platform_name" ).val( ui.item.name );
+					$( "#platform_id" ).val( ui.item.platform_id );
+			 
+			        return false;
+			      } 
+				  });
+			 
+			  });
