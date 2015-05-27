@@ -31,7 +31,7 @@ var getErrorMessage = function (err) {	//accepts a Mongoose error object
 
 // Creates a new article
 exports.create = function (req, res) {
-
+	//console.log(req.body); 
 	// Create a new article object
 	var article = new Article(req.body);
 
@@ -101,6 +101,7 @@ exports.read = function (req, res) {
 // in the articleByID() middleware.  So you only need to update
 // the title and content fields.
 exports.update = function (req, res) {
+	//console.log(req.article);
 	// Get the article form the 'request' object
 	var article = req.article;
 

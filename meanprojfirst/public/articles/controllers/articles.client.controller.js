@@ -25,6 +25,7 @@ angular.module('articles').controller('ArticlesController', ['$scope', '$routePa
 			//Articles resource service to create a new article resource
 			var article = new Articles({
 				//comes from title and content form fields in $scope
+				//this will get passed to req.body in the server's articles controller
 				title: this.title,
 				content: this.content
 			});
