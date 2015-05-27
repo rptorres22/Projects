@@ -44,6 +44,6 @@ module.exports = function (server, io, mongoStore) {
 	io.on('connection', function (socket) {
 		
 		// configure the socket server to include the chat controller
-		require('.//app/controllers/chat.server.controller')(io, socket);
+		require('../app/controllers/chat.server.controller')(io, socket);
 	});
 };

@@ -22,7 +22,8 @@ var mainApplicationModuleName = 'mean';
 	'articles' - this is the articles feature
 */
 
-var mainApplicationModule = angular.module(mainApplicationModuleName, ['ngResource', 'ngRoute', 'users', 'example', 'articles']);
+var mainApplicationModule = angular.module(mainApplicationModuleName, 
+	['ngResource', 'ngRoute', 'users', 'example', 'articles', 'chat']);
 
 
 
