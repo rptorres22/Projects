@@ -1,4 +1,8 @@
 var config			= require('./config'),
+
+	http 			= require('http'), // needed for socketio
+	socketio		= require('socket.io'), 
+
 	express 		= require('express'),
 	morgan 			= require('morgan'),
 	compress 		= require('compression'),
@@ -9,7 +13,15 @@ var config			= require('./config'),
 	passport		= require('passport');
 
 module.exports = function () {
+
 	var app = express();
+
+	// configuring socketio
+	// ----
+	// create server object using http core module and wrap the express app object
+	var server = http.createServer(app);
+	// attach socket.io to server object
+	var io = socketio.listen(server);
 
 
 	if (process.env.NODE_ENV === 'development') {
@@ -52,5 +64,20 @@ module.exports = function () {
 
 	app.use(express.static('./public'));
 
-	return app;
+	//return app;
+
+	// for socket.io, return the server object instead of the app object
+	// when this starts, it will run socket.io server along with the express application
+	return server;
+
+	/*
+		While you can already start using Socket.io, there is still one major problem with
+		this implementation. Since Socket.io is a standalone module, requests that are
+		sent to it are detached from the Express application. This means that the Express
+		session information is not available in a socket connection. This raises a serious
+		obstacle when dealing with your Passport authentication in the socket layer of
+		your application. To solve this issue, you will need to configure a persistent session
+		storage, which will allow you to share your session information between the Express
+		application and Socket.io handshake requests.
+	*/
 };
