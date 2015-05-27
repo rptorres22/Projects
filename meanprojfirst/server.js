@@ -11,7 +11,7 @@ var mongoose 	= require('./config/mongoose'),
 	passport 	= require('./config/passport');
 
 var db 	= mongoose();
-var app = express();
+var app = express(db);		// now passing the db for mongoStore
 var passport = passport();
 
 app.listen(3000);

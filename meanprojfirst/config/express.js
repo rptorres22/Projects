@@ -9,10 +9,13 @@ var config			= require('./config'),
 	bodyParser 		= require('body-parser'),
 	methodOverride 	= require('method-override'),
 	session			= require('express-session'),
+
+	MongoStore		= require('connect-mongo')(session), // to store session in the DB
+
 	flash			= require('connect-flash'),
 	passport		= require('passport');
 
-module.exports = function () {
+module.exports = function (db) {
 
 	var app = express();
 
@@ -38,11 +41,22 @@ module.exports = function () {
 	app.use(bodyParser.json());
 	app.use(methodOverride());
 
+	
+
+	// configuring mongoStore
+	var mongoStore = new MongoStore({
+		//db: db.connection.db //the book had this old way of doing it
+
+		// the db argument is passed from server.js
+		mongooseConnection: db.connection //new way of connecting 0.8.1
+	});
+
 
 	app.use(session({
 		saveUninitialized: true,
 		resave: true,
-		secret: config.sessionSecret
+		secret: config.sessionSecret,
+		store: mongoStore // configuring for mongostore
 	}));
 
 
@@ -64,7 +78,10 @@ module.exports = function () {
 
 	app.use(express.static('./public'));
 
-	//return app;
+	//return app;  //this was before we used socket.io
+
+	// configuring socketio
+	require('./socketio')(server, io, mongoStore);
 
 	// for socket.io, return the server object instead of the app object
 	// when this starts, it will run socket.io server along with the express application
@@ -79,5 +96,16 @@ module.exports = function () {
 		your application. To solve this issue, you will need to configure a persistent session
 		storage, which will allow you to share your session information between the Express
 		application and Socket.io handshake requests.
+
+		To configure your Socket.io session to work in conjunction with your Express
+		sessions, you have to find a way to share session information between Socket.io and
+		Express. Since the Express session information is currently being stored in memory,
+		Socket.io will not be able to access it properly. So, a better solution would be to store
+		the session information in your MongoDB. Fortunately, there is node module named
+		connect-mongo that allows you to store session information in a MongoDB instance
+		almost seamlessly. To retrieve the Express session information, you will need some
+		way to parse the signed session cookie information. For this purpose, you'll also
+		install the cookie-parser module, which is used to parse the cookie header and
+		populate the HTTP request object with cookies-related properties.
 	*/
 };
