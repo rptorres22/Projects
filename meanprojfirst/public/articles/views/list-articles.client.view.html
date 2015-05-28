@@ -4,12 +4,13 @@
 	will offer the user to navigate to the create-article view.
 -->
 
-
+<!-- The list articles view -->
 <section data-ng-controller="ArticlesController" data-ng-init="find()">
 
 	<h1>Articles</h1>
 
 	<ul>
+		<!-- The list of article -->
 		<li data-ng-repeat="article in articles">
 			<a data-ng-href="#!/articles/{{article._id}}" data-ng-bind="article.title"></a>
 			<br>
@@ -20,11 +21,12 @@
 		</li>
 	</ul>
 
+	<!-- If there are no articles in the list, suggest the user's create a new article -->
 	<div data-ng-hide="!articles || articles.length">
 		No articles yet, whly don't you <a href="/#!/articles/create"> create one</a>?
 	</div>
 	
-	<!-- i added this -->
+	<!-- Extra code - i added this to navigate easier-->
 	<div data-ng-show="articles.length">
 		<a href="/#!/articles/create">Create a new article</a>
 	</div>

@@ -1,14 +1,18 @@
 // app/models/article.server.model.js
 
+// Invoke 'strict' JavaScript mode
+'use strict';
+
 /*
 	This will represent the article entity
 */
 
+// Load the module dependencies
 var mongoose 	= require('mongoose'),
 	Schema 		= mongoose.Schema;
 
 
-
+// Define a new 'ArticleSchema'
 var ArticleSchema = new Schema({
 
 	created: {
@@ -43,4 +47,6 @@ var ArticleSchema = new Schema({
 // it was not populating the fullName virtual field of the 'User' object in this schema's 'creator'
 ArticleSchema.set('toJSON', { getters: true, virtuals: true });
 
+
+// Create the 'Article' model out of the 'ArticleSchema'
 mongoose.model('Article', ArticleSchema);

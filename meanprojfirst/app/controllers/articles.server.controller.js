@@ -1,6 +1,11 @@
 // app/controllers/articles.server.controller.js
 
-var mongoose	= require('mongoose');
+// Invoke 'strict' JavaScript mode
+'use strict';
+
+
+// Load the module dependencies
+var mongoose	= require('mongoose'),
 	Article 	= mongoose.model('Article');
 
 
@@ -73,8 +78,9 @@ exports.list = function (req, res) {
 };
 
 
-// getting an article by ID
+// Create a new controller middleware that retrieves a single existing article
 exports.articleByID = function (req, res, next, id) {
+	// Use the model 'findById' method to find a single article
 	Article.findById(id)
 		.populate('creator', 'firstName lastName fullName')
 		.exec(function (err, article) {
@@ -82,8 +88,11 @@ exports.articleByID = function (req, res, next, id) {
 			if (!article)
 				return next(new Error('Failed to load article ' + id));
 
+			// If an article is found use the 'request' object to pass it to the next middleware
 			//console.log(article.creator.fullName);
 			req.article = article;
+
+			// Call the next middleware
 			next();
 		});
 };
@@ -127,8 +136,10 @@ exports.update = function (req, res) {
 // in the articleByID() middleware.  Just need to invoke the mongoose
 // remove() method.
 exports.delete = function (req, res) {
+	// Get the article from the 'request' object
 	var article = req.article;
 
+	// Use the model 'remove' method to delete the article
 	article.remove(function (err) {
 		if (err) {
 			return res.status(400).send({
@@ -145,11 +156,14 @@ exports.delete = function (req, res) {
 // the user.  only users that created the article
 // can update/delete them.
 exports.hasAuthorization = function (req, res, next) {
+	// If the current user is not the creator of the article send the appropriate error message
 	if (req.article.creator.id !== req.user.id) {
 		return res.status(403).send({
 			message: 'User is not authorized'
 		});
 	}
+
+	// Call the next middleware
 	next();
 };
 

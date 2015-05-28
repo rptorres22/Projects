@@ -1,17 +1,27 @@
 // app/routes/users.server.routes.js
 
+// Invoke 'strict' JavaScript mode
+'use strict';
+
+// Load the module dependencies
 var users 		= require('../../app/controllers/users.server.controller'),
 	passport 	= require('passport');
 
+
+
+// Define the routes module' method
 module.exports = function(app) {
 
 
 
 	// ================================================
+
+	// Set up the 'signup' routes 
 	app.route('/signup')
 		.get(users.renderSignup)
 		.post(users.signup);
 
+	// Set up the 'signin' routes 
 	app.route('/signin')
 		.get(users.renderSignin)
 		.post(passport.authenticate('local', {
@@ -20,10 +30,12 @@ module.exports = function(app) {
 			failureFlash: true				// tells passport whether or not to use flash messages
 		}));
 
+	// Set up the 'signout' route
 	app.get('/signout', users.signout);
 
 	// ================================================
 
+	// Set up the Facebook OAuth routes 
 	app.get('/oauth/facebook', passport.authenticate('facebook', {
 		scope: 'email',
 		failureRedirect: '/signin'
@@ -36,6 +48,7 @@ module.exports = function(app) {
 
 	// ================================================
 
+	// Set up the Twitter OAuth routes 
 	app.get('/oauth/twitter', passport.authenticate('twitter', {
 		failureRedirect: '/signin'
 	}));
@@ -47,6 +60,7 @@ module.exports = function(app) {
 
 	// ================================================
 
+	// Set up the Google OAuth routes
 	app.get('/oauth/google', passport.authenticate('google', {
 		failureRedirect: '/signin',
 		scope: [

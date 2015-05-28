@@ -5,6 +5,7 @@
 // instead of hard coding the ng-app directive into an html tag
 // we will do it this way
 
+// Create the main application
 var mainApplicationModuleName = 'mean';
 
 
@@ -28,7 +29,7 @@ var mainApplicationModule = angular.module(mainApplicationModuleName,
 
 
 
-
+// Configure the hashbang URLs using the $locationProvider services 
 /*
 	This is to help search engine crawlers to mark the application
 	as a single-page application.  That way, the search engine crawlers know
@@ -48,12 +49,14 @@ mainApplicationModule.config(['$locationProvider',
 ]);
 
 
+// Fix Facebook's OAuth bug
 // to solve Facebook's redirect bug that adds a hash part to the application's URL
 //	after OAuth authentication round-trip.
 if (window.location.hash === '#_=_') 
 	window.location.hash = '#!';
 
 
+// Manually bootstrap the AngularJS application
 angular.element(document).ready(function() {
 	angular.bootstrap(document, [mainApplicationModuleName]);
 });

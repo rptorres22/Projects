@@ -1,5 +1,7 @@
 // public/articles/articles.client.module.js
 
+// Invoke 'strict' JavaScript mode
+'use strict';
 
-//initialize the articles module
+// Create/Initialize the 'articles' module
 angular.module('articles', []);

@@ -1,5 +1,8 @@
 // app/controllers/chat.server.controller.js
 
+// Invoke 'strict' JavaScript mode
+'use strict';
+
 module.exports = function (io, socket) {
 
 

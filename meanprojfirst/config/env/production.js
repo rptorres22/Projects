@@ -1,13 +1,13 @@
-// config/env/development.js
+// config/env/production.js
 
 // Invoke 'strict' JavaScript mode
 'use strict';
 
 // Set the 'development' environment configuration object
 module.exports = {
-	db: 'mongodb://localhost/mean-book',
+	db: 'mongodb://localhost/mean-production',
 
-	sessionSecret: 'developmentSessionSecret',
+	sessionSecret: 'productionSessionSecret',
 
 
 	//https://developers.facebook.com/

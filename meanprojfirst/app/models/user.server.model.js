@@ -1,9 +1,15 @@
 // app/models/user.server.model.js
 
+// Invoke 'strict' JavaScript mode
+'use strict';
+
+// Load the module dependencies
 var mongoose 	= require('mongoose'),
 	crypto 		= require('crypto'),
 	Schema 		= mongoose.Schema;
 
+
+// Define a new 'UserSchema'
 var UserSchema = new Schema({
 
 	firstName: String,
@@ -151,13 +157,17 @@ UserSchema.methods.authenticate = function (password) {
 UserSchema.statics.findUniqueUsername = function (username, suffix, callback) {
 
 	var _this = this;
+
+	// Add a 'username' suffix
 	var possibleUsername = username + (suffix || '');
 
+	// Use the 'User' model 'findOne' method to find an available unique username
 	_this.findOne({
 		username: possibleUsername
 	}, function (err, user) {
-
+		// If an error occurs call the callback with a null value, otherwise find find an available unique username
 		if (!err) {
+			// If an available unique username was found call the callback method, otherwise call the 'findUniqueUsername' method again with a new suffix
 			if (!user) {
 				callback(possibleUsername);
 			} else {
@@ -185,8 +195,9 @@ UserSchema.statics.findUniqueUsername = function (username, suffix, callback) {
 //		this.firstName = splitName[0] || '';
 //		this.lastName = splitName[1] || '';
 //	});
+// Configure the 'UserSchema' to use getters and virtuals when transforming to JSON
 UserSchema.set('toJSON', { getters: true, virtuals: true });
 
 
-
+// Create the 'User' model out of the 'UserSchema'
 mongoose.model('User', UserSchema);

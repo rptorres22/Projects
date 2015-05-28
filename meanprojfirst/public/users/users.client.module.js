@@ -1,5 +1,7 @@
 // public/users/users.client.module.js
 
+// Invoke 'strict' JavaScript mode
+'use strict';
 
-//initialize the users module
+// Create/initialize the 'users' module
 angular.module('users', []);

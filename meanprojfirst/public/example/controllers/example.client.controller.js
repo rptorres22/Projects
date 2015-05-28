@@ -1,5 +1,7 @@
 // public/controllers/example.client.controller.js
 
+// Invoke 'strict' JavaScript mode
+'use strict';
 
 /*
 	Controllers are basic constructor functions which angular uses
@@ -15,9 +17,11 @@
 
 */
 
+// Create the 'example' controller
 angular.module('example').controller('ExampleController', ['$scope', 'Authentication',
 
 	function ($scope, Authentication) {
+		// Expose the authentication service
 		//$scope.name = Authentication.user ? Authentication.user.fullName : 'MEAN Application';
 		$scope.authentication = Authentication;
 	}
