@@ -46,8 +46,6 @@ module.exports = function (db) {
 	app.use(bodyParser.urlencoded({
 		extended: true
 	}));
-
-	// Configure the MongoDB session storage
 	app.use(bodyParser.json());
 	app.use(methodOverride());
 
