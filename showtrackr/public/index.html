@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html ng-app"MyApp"> <!-- tells Angular to consider this to be the root element of our app-->
+<head>
+	<base href="/"> <!-- necessary to enable HTML5 History API in AngularJS.  This will allow us to have clean URLs without the # symbol-->
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE-edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>ShowTrackr</title>
+	<link rel="icon" type="image/png" href="favicon.png"/>
+</head>
+<body>
+
+	<div ng-view></div> <!-- directive that includes the rendered template of the current route-->
+						<!-- Every time the current route changes, the included view changes with it according-->
+						<!-- to the configuraton of the $route service-->
+	<script src="vendor/angular.js"></script>
+	<script src="vendor/angular-strap.js"></script>
+	<script src="vendor/angular-strap.tpl.js"></script>
+	<script src="vendor/angular-messages.js"></script>
+	<script src="vendor/angular-resource.js"></script>
+	<script src="vendor/angular-route.js"></script>
+	<script src="vendor/angular-cookies.js"></script>
+	<script src="vendor/moment.min.js"></script>
+
+</body>
+</html>
