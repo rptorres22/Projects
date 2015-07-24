@@ -232,7 +232,7 @@ app.post('/api/shows', function(req, res, next) {
 						firstAired: series.firstaired,
 						genre: series.genre.split('|').filter(Boolean),
 						network: series.network,
-						overivew: series.overivew,
+						overview: series.overview,
 						rating: series.rating,
 						ratingCount: series.ratingcount,
 						runtime: series.runtime,
