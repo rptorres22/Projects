@@ -1,0 +1,55 @@
+<div class="jumbotron">
+	<div class="container">
+		<ul class="alphabet">
+
+			<!-- 
+				The ng-repeat will iterate over an array of items specified in the controller for this page.
+				It expects an array called "alphabet" defiend in the MainCtrl controller.  The "char" refers
+				to each individual item in that array, an alphabet letter in this case.  When you click on
+				that letter it will run the "filterbyAlphabet" function specified in the "MainCtrl" controller
+				as well.  Here we are passing the current letter in "filterByAlphabet(char)" otherewise how 
+				would it know hwich letter to filter by?
+			-->
+			<li ng-repeat="char in alphabet">
+				<span ng-click="filterByAlphabet(char)">{{char}}</span>
+			</li>
+		</ul>
+		<ul class="genres">
+			<li ng-repeat="genre in genres">
+				<span ng-click="filterByGenre(genre)">{{genre}}</span>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<div class="container">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			{{headingTitle}}
+			<div class="pull-right">
+				<!-- In AngularJS you can also filter and sort your results.  In this code, thumbnails
+					are sorted by the rating and filtered by the query you type into the Search box:
+					The reason it's "query.name" and not just "query" is because we want to filter only
+					by the TV show name, not by its summary, rating, network, air time, etc.
+				-->
+				<input class="search" type="text" ng-model="query.name" placeholder="Search...">
+			</div>
+		</div>
+		<div class="panel-body">
+			<div class="row show-list">
+				<!--
+					This other "ng-repeat" displays a thumbnail and a name of each show
+				-->
+				<div class="col-xs-4 col-md-3" ng-repeat="show in shows | filter:query | orderBy:'rating':true">
+					<a href="/shows/{{show._id}}">
+						<img class="img-rounded" ng-source"{{show.poster}}" width="100%"/>
+					</a>
+					<div class="text-center">
+						<a href="/shows/{{show._id}}">{{show.name}}</a>
+						<p class="text-muted">Episodes: {{show.episodes.length}}</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
