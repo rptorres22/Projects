@@ -1,17 +1,86 @@
-var express = require('express');
-var path = require('path');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var mongoose = require('mongoose');
-var bcrypt = require('bcryptjs');
-var async = require('async');
-var request = require('request');
-var xml2js = require('xml2js');
-var _ = require('lodash');
-var session = require('express-session');
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
+var express 		= require('express');
+var path 			= require('path');
+var logger 			= require('morgan');
+var cookieParser 	= require('cookie-parser');
+var bodyParser 		= require('body-parser');
+var mongoose 		= require('mongoose');
+var bcrypt 			= require('bcryptjs');
+var async 			= require('async');
+var request 		= require('request');
+var xml2js 			= require('xml2js');
+var _ 				= require('lodash');
+var session 		= require('express-session');
+var passport 		= require('passport');
+var LocalStrategy 	= require('passport-local').Strategy;
+var agenda 			= require('agenda')({ db: { address: 'localhost:27017/test' } });
+var sugar 			= require('sugar');
+var nodemailer 		= require('nodemailer');
+
+
+
+
+
+// Create new agenda task:
+/*
+	Agenda is a job scheduling library for Node.js similar to none-cron.  We define an agenda
+	called "send email alert".  Here, we don't concern ourselves with when it runs. We only 
+	care what it does, i.e. what should happen when "send email alert" job is dispatched.
+
+	When this job runs, name of the show will be passed in as an optional "data" object.
+
+	Since we're not storing the entire user document in "subscribers" array (only references),
+	we have to use Mongoose's "populate" method.  Once the show is found, we need a list of
+	emails of all subscribers that have to be notified.
+
+	We then find the upcoming episode so that we could include a brief summary of the next
+	episode in the email message.
+
+	And then it's just yoru standard "Nodemailer" boilerplate for sending emails.  
+*/
+agenda.define('send email alert', function(job, done) {
+	Show.findOne({ name: job.attrs.data }).populate('subscribers').exec(function(err, show) {
+		var emails = show.subscribers.map(function(user) {
+			return user.email;
+		});
+
+		var upcomingEpisode = show.episodes.filter(function(episode) {
+			return new Date(episode.firstAired) > new Date();
+		})[0];
+
+		var smtpTransport = nodemailer.createTransport('SMTP', {
+			service: 'SendGrid',
+			auth: { user: 'hslogin', pass: 'hspassword00'}
+		});
+
+		var mailOptions = {
+			from: 'Fred Foo ✔ <foo@blurdybloop.com>',
+			to: emails.join(','),
+			subject: show.name + ' is starting soon!',
+			text: show.name + ' starts in less than 2 hours on ' + show.network + '.\n\n' + 
+				'Episode ' + upcomingEpisode.episodeNumber + 'Overview\n\n' + upcomingEpisode.overview
+		};
+
+		smtpTransport.sendMail(mailOptions, function(error, response) {
+			console.log('Message sent: ' + response.message);
+			smtpTransport.close();
+			done();
+		});
+	});
+});
+
+agenda.on('start', function(job) {
+	console.log("Job %s starting", job.attrs.name);
+});
+
+agenda.on('complete', function(job) {
+	console.log("Job %s finished", job.attrs.name);
+});
+
+
+
+
+
+
 
 
 /*
@@ -340,6 +409,10 @@ app.post('/api/shows', function(req, res, next) {
 				}
 				return next(err);
 			}
+
+			//so it can start the agenda task whenever a new show is added to the database.
+			var alertDate = Date.create('Next ' + show.airsDaysOfWeek + ' at' + show.airsTime).rewind({ hour: 2});
+			agenda.schedule(alertDate, 'send email alert', show.name).repeatEvery('1 week');
 			res.sendStatus(200);
 		}); 
 	});
