@@ -9,6 +9,50 @@ var async = require('async');
 var request = require('request');
 var xml2js = require('xml2js');
 var _ = require('lodash');
+var session = require('express-session');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+
+
+/*
+	In order to setup Passport.js we have to configure four things
+	1. Passport serialize and deserialize methods
+	2. Passport strategy
+	3. Express session middleware
+	4. Passport middleware
+*/
+
+// Serialize and deserialize methods are used to keep you signed-in
+passport.serializeUser(function(user, done) {
+	done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+	User.findById(id, function(err, user) {
+		done(err, user);
+	});
+});
+
+/*
+	Passport comes with hundreds of different strategies for just about every third-party service out there.
+	We will not be signing in with Facebook, Google, Twitter.  Instead we will use Passport's 
+	"LocalStrategy" to sign in with username and password.
+*/
+passport.use(new LocalStrategy({ usernameField: 'email' }, function(email, password, done) {
+	User.findOne({ email: email }, function(err, user) {
+		if(err)
+			return done(err);
+		if(!user) 
+			return done(null, false);
+		user.comparePassword(password, function(err, isMatch) {
+			if(err)
+				return done(err);
+			if(isMatch)
+				return done(null, user);
+			return done(null, false);
+		});
+	});
+}));
 
 
 
@@ -117,6 +161,15 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+app.use(session({ 
+	secret: 'keyboard cat',
+	resave: true,
+	saveUninitialized: true
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 
@@ -293,6 +346,127 @@ app.post('/api/shows', function(req, res, next) {
 });
 
 
+
+
+
+
+
+
+
+// to protect our routes from unauthenticated requests
+function ensureAuthenticated(req, res, next) {
+	if(req.isAuthenticated()) 
+		next();
+	else
+		res.sendStatus(401);
+}
+
+/*
+	When a user tries to sign-in from our AngularJS application, a POST request
+	is sent with the following data:
+	
+	{
+		email: 'example@email.com',
+		password: '1234'
+	}
+
+	This data is passed to the Passport LocalStrategy.  If email is found and 
+	password is valid then a new cookie is created with the user object,
+	additionally the user object is sent back to the client.
+
+	It is bad to send user's password over the network or store it in a cookie,
+	even if the password is encrypted.  A better solution needs to be used.
+*/
+app.post('/api/login', passport.authenticate('local'), function(req, res) {
+	res.cookie('user', JSON.stringify(req.user));
+	res.send(req.user);
+});
+
+/*
+	The signup route has no input validation.  
+	Try using "express-validator"
+*/
+app.post('/api/signup', function(req, res, next) {
+	var user = new User({
+		email: req.body.email,
+		password: req.body.password
+	});
+	user.save(function(err) {
+		if(err) 
+			return next(err);
+		res.sendStatus(200);
+	});
+});
+
+/*
+	Passport exposes a logout() function on "req" object that can be called 
+	from any route which terminates a login session.  Invoking "logout()" will
+	remove the "req.user" property and clear the login session.
+*/
+app.get('/api/logout', function(req, res, next) {
+	req.logout();
+	res.sendStatus(200);
+});
+
+/*
+	Custom middleware.
+	If user is authenticated, this will create a new cookie that will be
+	consumed by our AngularJS authentication service to read user information
+*/
+app.use(function(req, res, next) {
+	if(req.user) {
+		res.cookie('user', JSON.stringify(req.user));
+	}
+	next();
+});
+
+
+
+
+
+
+
+/*
+	Two routes for subscribing and unsubscribing to/from a show.
+*/
+// using "ensureAuthenticated" middleware here to prevent unauthenticated users from accessing
+// these route handlers
+app.post('/api/subscribe', ensureAuthenticated, function(req, res, next) {
+	Show.findById(req.body.showId, function(err, show) {
+		
+		if(err)
+			return next(err);
+
+		//Using req.user.id of a currently signed-in user
+		show.subscribers.push(req.user.id);
+		show.save(function(err) {
+			if(err)
+				return next(err);
+			res.sendStatus(200);
+		});
+	});
+});
+
+app.post('/api/unsubscribe', ensureAuthenticated, function(req, res, next) {
+	Show.findById(req.body.showId, function(err, show) {
+	
+		if(err)
+			return next(err);
+
+		var index = show.subscribers.indexOf(req.user.id);
+		show.subscribers.splice(index, 1);
+		show.save(function(err) {
+			if(err)
+				return next(err);
+			res.sendStatus(200);
+		});
+	});
+});
+
+
+
+
+
 /*
 	A common problem when you use HTML5 pushState on the client-side.  To
 	get around this problem we have to create a redirect route.
@@ -322,6 +496,11 @@ app.use(function(err, req, res, next) {
 	console.error(err.stack);
 	res.sendStatus(500, { message: err.message });
 });
+
+
+
+
+
 
 
 app.listen(app.get('port'), function() {

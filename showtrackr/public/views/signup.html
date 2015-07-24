@@ -38,7 +38,7 @@
 					<div class="form-group" ng-class="{ 'has-success' : signupForm.confirmPassword.$valid && signupForm.confirmPassword.$dirty, 'has-error' : signupForm.confirmPassword.$invalid && signupForm.confirmPassword.$dirty }">
 
 						<!-- directive repeat-password is controlled by "directives/repeatPassword.js"-->
-						<input class="form-control input-lg" type="password" name="confirmPassword" ng-model="confirmPassword" repeat-password="password" placeholder="Confirm Password" required=>
+						<input class="form-control input-lg" type="password" name="confirmPassword" ng-model="confirmPassword" repeat-password="password" placeholder="Confirm Password" required>
 
 						<div class="help-block text-danger my-special-animation" ng-if="signupForm.confirmPassword.$dirty" ng-messages="signupForm.confirmPassword.$error">
 							<div ng-message="required">You must confirm password.</div>
