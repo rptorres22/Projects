@@ -45,10 +45,14 @@ Temporary Items
 # Ignore files from the app
 /node_modules
 /MultiVision/node_modules
+/MultiVision/public/vendor
 /contactlistapp/node_modules
 /mean-demo/node_modules
 /meanapp/server/node_modules
 /meanprojfirst/node_modules
+/meanprojfirst/public/lib
 /moon/node_modules
 /BookAPI/node_modules
 /showtrackr/node_modules
+/newedenfaces/node_modules
+/newedenfaces/bower_components
