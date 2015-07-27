@@ -411,6 +411,18 @@ app.post('/api/shows', function(req, res, next) {
 			}
 
 			//so it can start the agenda task whenever a new show is added to the database.
+			/*
+				How do we know hwen to schedule it?  Do we schedule n jobs for every episode of every show or would
+				it be better to schedule a recurring job for each show?  We choose the latter approach of using a
+				recurring job per show.
+				The TVDB API gives us two pieces of information for each show: "air time" and "air day", e.g. "9:00PM"
+				and "Tuesday".  Next challenge - how do we construct a "Date" object from that?
+				Sugar.js can override built-in objects such as Date to provide us with extra functionality.  The code
+				below creats a "Date" object from something like "Next Saturday at 8:00PM" then substract two hours
+				from that.
+
+				When a new job is scheduled, Agenda will save that job to MongoDB for guaranteed persistence.
+			*/
 			var alertDate = Date.create('Next ' + show.airsDaysOfWeek + ' at' + show.airsTime).rewind({ hour: 2});
 			agenda.schedule(alertDate, 'send email alert', show.name).repeatEvery('1 week');
 			res.sendStatus(200);
