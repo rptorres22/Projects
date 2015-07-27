@@ -1,7 +1,7 @@
 // app/controllers/users.server.controller.js
 
 // Invoke 'strict' JavaScript mode
-'use strict';
+//'use strict';
 
 // Load the module dependencies
 var User 		= require('mongoose').model('User'),

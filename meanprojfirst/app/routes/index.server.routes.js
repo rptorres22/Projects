@@ -1,7 +1,7 @@
 // app/routes/index.server.routes.js
 
 // Invoke 'strict' JavaScript mode
-'use strict';
+//'use strict';
 
 // Define the routes module' method
 module.exports = function (app) {

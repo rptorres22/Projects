@@ -1,7 +1,7 @@
 // public/chat/config/chat.client.routes.js
 
 // Invoke 'strict' JavaScript mode
-'use strict';
+//'use strict';
 
 // Configure the 'chat' module routes
 angular.module('chat').config(['$routeProvider', 

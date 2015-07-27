@@ -1,7 +1,7 @@
 // app/routes/article.server.routes.js
 
 // Invoke 'strict' JavaScript mode
-'use strict';
+//'use strict';
 
 // Load the module dependencies
 var users 		= require('../../app/controllers/users.server.controller'),

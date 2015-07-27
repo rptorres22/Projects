@@ -1,7 +1,7 @@
 // config/express.js
 
 // Invoke 'strict' JavaScript mode
-'use strict';
+//'use strict';
 
 // Load the module dependencies
 var config			= require('./config'),

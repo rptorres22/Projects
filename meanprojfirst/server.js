@@ -1,7 +1,7 @@
 // server.js
 
 // Invoke 'strict' JavaScript mode
-'use strict';
+//'use strict';
 
 /*
 	This is the main file that you will run 

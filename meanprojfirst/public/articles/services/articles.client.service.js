@@ -1,7 +1,7 @@
 // public/articles/services/articles.client.service.js
 
 // Invoke 'strict' JavaScript mode
-'use strict';
+//'use strict';
 
 
 /*

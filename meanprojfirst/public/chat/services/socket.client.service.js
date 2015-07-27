@@ -1,7 +1,7 @@
 // public/chat/services/socket.client.service.js
 
 // Invoke 'strict' JavaScript mode
-'use strict';
+//'use strict';
 
 // Create the Socket.io wrapper service
 angular.module('chat').service('Socket', ['Authentication', '$location', '$timeout', 

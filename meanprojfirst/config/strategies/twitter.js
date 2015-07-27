@@ -1,7 +1,7 @@
 // config/strategies/twitter.js
 
 // Invoke 'strict' JavaScript mode
-'use strict';
+//'use strict';
 
 // Load the module dependencies
 var passport 		= require('passport'),

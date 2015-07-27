@@ -1,7 +1,7 @@
 // app/models/article.server.model.js
 
 // Invoke 'strict' JavaScript mode
-'use strict';
+//'use strict';
 
 /*
 	This will represent the article entity

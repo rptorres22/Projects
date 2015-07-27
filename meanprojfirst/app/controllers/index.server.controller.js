@@ -1,7 +1,7 @@
 // app/controllers/index.server.controller.js
 
 // Invoke 'strict' JavaScript mode
-'use strict';
+//'use strict';
 
 // Create a new 'render' controller method
 exports.render = function (req, res) {

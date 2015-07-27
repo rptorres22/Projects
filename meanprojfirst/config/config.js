@@ -1,7 +1,7 @@
 // config/config.js
 
 // Invoke 'strict' JavaScript mode
-'use strict';
+//'use strict';
 
 /*
 	This will load the appropriate configuration file inside the /config/env/ 

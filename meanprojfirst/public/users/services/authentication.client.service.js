@@ -1,7 +1,7 @@
 // public/users/services/authentication.client.service.js
 
 // Invoke 'strict' JavaScript mode
-'use strict';
+//'use strict';
 
 // Create the 'Authentication' service
 angular.module('users').factory('Authentication', [

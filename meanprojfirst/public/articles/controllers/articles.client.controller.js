@@ -1,7 +1,7 @@
 // public/articles/controllers/articles.client.controller.js
 
 // Invoke 'strict' JavaScript mode
-'use strict';
+//'use strict';
 
 /*
 	$routeParams: This is provided with the ngRoute module and holds references to route 

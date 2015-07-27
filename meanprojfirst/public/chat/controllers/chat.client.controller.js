@@ -1,7 +1,7 @@
 // public/chat/controllers/chat.server.controller.js
 
 // Invoke 'strict' JavaScript mode
-'use strict';
+//'use strict';
 
 // Create the 'chat' controller
 angular.module('chat').controller('ChatController', ['$scope', 'Socket', 

@@ -1,7 +1,7 @@
 // config/env/test.js
 
 // Invoke 'strict' JavaScript mode
-'use strict';
+//'use strict';
 
 // Set the 'development' environment configuration object
 module.exports = {

@@ -1,7 +1,7 @@
 // app/models/user.server.model.js
 
 // Invoke 'strict' JavaScript mode
-'use strict';
+//'use strict';
 
 // Load the module dependencies
 var mongoose 	= require('mongoose'),

@@ -1,7 +1,7 @@
 // /public/example/example.client.routes.js
 
 // Invoke 'strict' JavaScript mode
-'use strict';
+//'use strict';
 
 /*
 	ngRoute module has several key entities to manage routes.  

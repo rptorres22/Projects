@@ -1,7 +1,7 @@
 // public/example/example.client.module.js
 
 // Invoke 'strict' JavaScript mode
-'use strict';
+//'use strict';
 
 
 // this is where the module is created and initialized

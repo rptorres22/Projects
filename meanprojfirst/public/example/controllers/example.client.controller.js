@@ -1,7 +1,7 @@
 // public/controllers/example.client.controller.js
 
 // Invoke 'strict' JavaScript mode
-'use strict';
+//'use strict';
 
 /*
 	Controllers are basic constructor functions which angular uses

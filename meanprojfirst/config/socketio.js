@@ -1,7 +1,7 @@
 // config/socketio.js
 
 // Invoke 'strict' JavaScript mode
-'use strict';
+//'use strict';
 
 // socket.io configuration middleware to retrieve the session user
 

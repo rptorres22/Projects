@@ -1,7 +1,7 @@
 // app/controllers/articles.server.controller.js
 
 // Invoke 'strict' JavaScript mode
-'use strict';
+//'use strict';
 
 
 // Load the module dependencies
