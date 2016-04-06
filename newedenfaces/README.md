@@ -1,3 +1,6 @@
+Descriptions of things in this project
+
+
 package.json stuff:
 
 Package Name 							Description
