@@ -6,6 +6,9 @@ run "npm run watch" in another tab/console
 run "mongod" to have mongodb running
 
 
+Tutorial left off at: Step 13
+
+
 package.json stuff:
 
 Package Name 							Description
