@@ -3,6 +3,7 @@ Descriptions of things in this project
 to run:
 run "gulp" in one tab/console window
 run "npm run watch" in another tab/console
+run "mongod" to have mongodb running
 
 
 package.json stuff:

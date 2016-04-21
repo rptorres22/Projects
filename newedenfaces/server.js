@@ -15,7 +15,7 @@ var bodyParser = require('body-parser');
 
 
 var mongoose = require('mongoose');
-var Character = require('./models/chracter');
+var Character = require('./models/character');
 var config = require('./config');
 
 var app = express();
