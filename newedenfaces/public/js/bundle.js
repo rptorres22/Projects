@@ -5,6 +5,58 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _alt = require('../alt');
+
+var _alt2 = _interopRequireDefault(_alt);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var AddCharacterActions = function () {
+	function AddCharacterActions() {
+		_classCallCheck(this, AddCharacterActions);
+
+		this.generateActions('addCharacterSuccess', // when character has been added to db
+		'addCharacterFail', // when character could not be added
+		'updateName', // when the character name text field is updated via onChange
+		'updateGender', // when the character gender radio button is updated via onChange
+		'invalidName', // when character name is invalid
+		'invalidGender' // when character gender is invalid
+		);
+	}
+
+	_createClass(AddCharacterActions, [{
+		key: 'addCharacter',
+		value: function addCharacter(name, gender) {
+			var _this = this;
+
+			$.ajax({
+				type: 'POST',
+				url: '/api/characters',
+				data: { name: name, gender: gender }
+			}).done(function (data) {
+				_this.actions.addCharacterSuccess(data.message);
+			}).fail(function (jqXhr) {
+				_this.actions.addCharacterFail(jqXhr.responseJSON.message);
+			});
+		}
+	}]);
+
+	return AddCharacterActions;
+}();
+
+exports.default = _alt2.default.createActions(AddCharacterActions);
+
+},{"../alt":4}],2:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); // instance of Alt from alt.js not Alt module
 // it is an instance of Alt which instantiates Flux dispatcher and provides methods
 // for creating Alt actions and stores.  Think of it as the glue between all of our
@@ -56,7 +108,7 @@ var FooterActions = function () {
 
 exports.default = _alt2.default.createActions(FooterActions);
 
-},{"../alt":3}],2:[function(require,module,exports){
+},{"../alt":4}],3:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -126,7 +178,7 @@ var NavbarActions = function () {
 
 exports.default = _alt2.default.createActions(NavbarActions);
 
-},{"../alt":3,"underscore":"underscore"}],3:[function(require,module,exports){
+},{"../alt":4,"underscore":"underscore"}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -141,7 +193,172 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = new _alt2.default();
 
-},{"alt":"alt"}],4:[function(require,module,exports){
+},{"alt":"alt"}],5:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _AddCharacterStore = require('../stores/AddCharacterStore');
+
+var _AddCharacterStore2 = _interopRequireDefault(_AddCharacterStore);
+
+var _AddCharacterActions = require('../actions/AddCharacterActions');
+
+var _AddCharacterActions2 = _interopRequireDefault(_AddCharacterActions);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var AddCharacter = function (_React$Component) {
+    _inherits(AddCharacter, _React$Component);
+
+    function AddCharacter(props) {
+        _classCallCheck(this, AddCharacter);
+
+        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(AddCharacter).call(this, props));
+
+        _this.state = _AddCharacterStore2.default.getState();
+        _this.onChange = _this.onChange.bind(_this);
+        return _this;
+    }
+
+    _createClass(AddCharacter, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            _AddCharacterStore2.default.listen(this.onChange);
+        }
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            _AddCharacterStore2.default.unlisten(this.onChange);
+        }
+    }, {
+        key: 'onChange',
+        value: function onChange(state) {
+            this.setState(state);
+        }
+    }, {
+        key: 'handleSubmit',
+        value: function handleSubmit(event) {
+            event.preventDefault();
+
+            var name = this.state.name.trim();
+            var gender = this.state.gender;
+
+            if (!name) {
+                _AddCharacterActions2.default.invalidName();
+                this.refs.nameTextField.getDOMNode().focus();
+            }
+
+            if (!gender) {
+                _AddCharacterActions2.default.invalidGender();
+            }
+
+            if (name && gender) {
+                _AddCharacterActions2.default.addCharacter(name, gender);
+            }
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                { className: 'container' },
+                _react2.default.createElement(
+                    'div',
+                    { className: 'row flipInX animated' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'col-sm-8' },
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'panel panel-default' },
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'panel-heading' },
+                                'Add Character'
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'panel-body' },
+                                _react2.default.createElement(
+                                    'form',
+                                    { onSubmit: this.handleSubmit.bind(this) },
+                                    _react2.default.createElement(
+                                        'div',
+                                        { className: 'form-group ' + this.state.nameValidationState },
+                                        _react2.default.createElement(
+                                            'label',
+                                            { className: 'control-label' },
+                                            'Character Name'
+                                        ),
+                                        _react2.default.createElement('input', { type: 'text', className: 'form-control', ref: 'nameTextField', value: this.state.name,
+                                            onChange: _AddCharacterActions2.default.updateName, autoFocus: true }),
+                                        _react2.default.createElement(
+                                            'span',
+                                            { className: 'help-block' },
+                                            this.state.helpBlock
+                                        )
+                                    ),
+                                    _react2.default.createElement(
+                                        'div',
+                                        { className: 'form-group ' + this.state.genderValidationState },
+                                        _react2.default.createElement(
+                                            'div',
+                                            { className: 'radio radio-inline' },
+                                            _react2.default.createElement('input', { type: 'radio', name: 'gender', id: 'female', value: 'Female', checked: this.state.gender === 'Female',
+                                                onChange: _AddCharacterActions2.default.updateGender }),
+                                            _react2.default.createElement(
+                                                'label',
+                                                { htmlFor: 'female' },
+                                                'Female'
+                                            )
+                                        ),
+                                        _react2.default.createElement(
+                                            'div',
+                                            { className: 'radio radio-inline' },
+                                            _react2.default.createElement('input', { type: 'radio', name: 'gender', id: 'male', value: 'Male', checked: this.state.gender === 'Male',
+                                                onChange: _AddCharacterActions2.default.updateGender }),
+                                            _react2.default.createElement(
+                                                'label',
+                                                { htmlFor: 'male' },
+                                                'Male'
+                                            )
+                                        )
+                                    ),
+                                    _react2.default.createElement(
+                                        'button',
+                                        { type: 'submit', className: 'btn btn-primary' },
+                                        'Submit'
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return AddCharacter;
+}(_react2.default.Component);
+
+exports.default = AddCharacter;
+
+},{"../actions/AddCharacterActions":1,"../stores/AddCharacterStore":12,"react":"react"}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -197,7 +414,7 @@ var App = function (_React$Component) {
 
 exports.default = App;
 
-},{"./Footer":5,"./Navbar":7,"react":"react"}],5:[function(require,module,exports){
+},{"./Footer":7,"./Navbar":9,"react":"react"}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -369,7 +586,7 @@ var Footer = function (_React$Component) {
 
 exports.default = Footer;
 
-},{"../actions/FooterActions":1,"../stores/FooterStore":10,"react":"react","react-router":"react-router"}],6:[function(require,module,exports){
+},{"../actions/FooterActions":2,"../stores/FooterStore":13,"react":"react","react-router":"react-router"}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -415,7 +632,7 @@ var Home = function (_React$Component) {
 
 exports.default = Home;
 
-},{"react":"react"}],7:[function(require,module,exports){
+},{"react":"react"}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1172,7 +1389,7 @@ var Navbar = function (_React$Component) {
 
 exports.default = Navbar;
 
-},{"../actions/NavbarActions":2,"../stores/NavbarStore":11,"react":"react","react-router":"react-router"}],8:[function(require,module,exports){
+},{"../actions/NavbarActions":3,"../stores/NavbarStore":14,"react":"react","react-router":"react-router"}],10:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -1197,7 +1414,11 @@ var _routes2 = _interopRequireDefault(_routes);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var history = (0, _createBrowserHistory2.default)();
+var history = (0, _createBrowserHistory2.default)(); /*
+                                                     The main.js is the entry point for our React application. We use it in gulpfile.js where 
+                                                     Browserify will traverse the entire tree of dependencies and generate the final bundle.js 
+                                                     file. You will rarely have to touch this file after its initial setup.
+                                                     */
 
 _reactDom2.default.render(_react2.default.createElement(
 	_reactRouter2.default,
@@ -1205,7 +1426,7 @@ _reactDom2.default.render(_react2.default.createElement(
 	_routes2.default
 ), document.getElementById('app'));
 
-},{"./routes":9,"history/lib/createBrowserHistory":21,"react":"react","react-dom":"react-dom","react-router":"react-router"}],9:[function(require,module,exports){
+},{"./routes":11,"history/lib/createBrowserHistory":23,"react":"react","react-dom":"react-dom","react-router":"react-router"}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1226,15 +1447,100 @@ var _Home = require('./components/Home');
 
 var _Home2 = _interopRequireDefault(_Home);
 
+var _AddCharacter = require('./components/AddCharacter');
+
+var _AddCharacter2 = _interopRequireDefault(_AddCharacter);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = _react2.default.createElement(
 	_reactRouter.Route,
 	{ component: _App2.default },
-	_react2.default.createElement(_reactRouter.Route, { path: '/', component: _Home2.default })
+	_react2.default.createElement(_reactRouter.Route, { path: '/', component: _Home2.default }),
+	_react2.default.createElement(_reactRouter.Route, { path: '/add', component: _AddCharacter2.default })
 );
 
-},{"./components/App":4,"./components/Home":6,"react":"react","react-router":"react-router"}],10:[function(require,module,exports){
+},{"./components/AddCharacter":5,"./components/App":6,"./components/Home":8,"react":"react","react-router":"react-router"}],12:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _alt = require('../alt');
+
+var _alt2 = _interopRequireDefault(_alt);
+
+var _AddCharacterActions = require('../actions/AddCharacterActions');
+
+var _AddCharacterActions2 = _interopRequireDefault(_AddCharacterActions);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var AddCharacterStore = function () {
+  function AddCharacterStore() {
+    _classCallCheck(this, AddCharacterStore);
+
+    this.bindActions(_AddCharacterActions2.default);
+    this.name = '';
+    this.gender = '';
+    this.helpBlock = ''; //  is a status message which gets displayed below the text field, e.g. Character has been added successfully.
+    this.nameValidationState = ''; // refers to the validation states on form controls provided by Bootstrap.
+    this.genderValidationState = ''; // refers to the validation states on form controls provided by Bootstrap.
+  }
+
+  _createClass(AddCharacterStore, [{
+    key: 'onAddCharacterSuccess',
+    value: function onAddCharacterSuccess(successMessage) {
+      this.nameValidationState = 'has-success';
+      this.helpBlock = successMessage;
+    }
+  }, {
+    key: 'onAddCharacterFail',
+    value: function onAddCharacterFail(errorMessage) {
+      this.nameValidationState = 'has-error';
+      this.helpBlock = errorMessage;
+    }
+  }, {
+    key: 'onUpdateName',
+    value: function onUpdateName(event) {
+      this.name = event.target.value;
+      this.nameValidationState = '';
+      this.helpBlock = '';
+    }
+  }, {
+    key: 'onUpdateGender',
+    value: function onUpdateGender(event) {
+      this.gender = event.target.value;
+      this.genderValidationState = '';
+    }
+
+    // handler is fired when Character Name field is empty. If the name does not exist in EVE Online database it will be a
+    // different error message provided by onAddCharacterFail handler.
+
+  }, {
+    key: 'onInvalidName',
+    value: function onInvalidName() {
+      this.nameValidationState = 'has-error';
+      this.helpBlock = 'Please enter a character name.';
+    }
+  }, {
+    key: 'onInvalidGender',
+    value: function onInvalidGender() {
+      this.genderValidationState = 'has-error';
+    }
+  }]);
+
+  return AddCharacterStore;
+}();
+
+exports.default = _alt2.default.createStore(AddCharacterStore);
+
+},{"../actions/AddCharacterActions":1,"../alt":4}],13:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1285,7 +1591,7 @@ var FooterStore = function () {
 
 exports.default = _alt2.default.createStore(FooterStore);
 
-},{"../actions/FooterActions":1,"../alt":3}],11:[function(require,module,exports){
+},{"../actions/FooterActions":2,"../alt":4}],14:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1370,7 +1676,7 @@ var NavbarStore = function () {
 
 exports.default = _alt2.default.createStore(NavbarStore);
 
-},{"../actions/NavbarActions":2,"../alt":3}],12:[function(require,module,exports){
+},{"../actions/NavbarActions":3,"../alt":4}],15:[function(require,module,exports){
 var pSlice = Array.prototype.slice;
 var objectKeys = require('./lib/keys.js');
 var isArguments = require('./lib/is_arguments.js');
@@ -1466,7 +1772,7 @@ function objEquiv(a, b, opts) {
   return typeof a === typeof b;
 }
 
-},{"./lib/is_arguments.js":13,"./lib/keys.js":14}],13:[function(require,module,exports){
+},{"./lib/is_arguments.js":16,"./lib/keys.js":17}],16:[function(require,module,exports){
 var supportsArgumentsClass = (function(){
   return Object.prototype.toString.call(arguments)
 })() == '[object Arguments]';
@@ -1488,7 +1794,7 @@ function unsupported(object){
     false;
 };
 
-},{}],14:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 exports = module.exports = typeof Object.keys === 'function'
   ? Object.keys : shim;
 
@@ -1499,7 +1805,7 @@ function shim (obj) {
   return keys;
 }
 
-},{}],15:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 /**
  * Indicates that navigation was caused by a call to history.push.
  */
@@ -1531,66 +1837,34 @@ exports['default'] = {
   REPLACE: REPLACE,
   POP: POP
 };
-},{}],16:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
-var _slice = Array.prototype.slice;
 exports.loopAsync = loopAsync;
 
 function loopAsync(turns, work, callback) {
-  var currentTurn = 0,
-      isDone = false;
-  var sync = false,
-      hasNext = false,
-      doneArgs = undefined;
+  var currentTurn = 0;
+  var isDone = false;
 
   function done() {
     isDone = true;
-    if (sync) {
-      // Iterate instead of recursing if possible.
-      doneArgs = [].concat(_slice.call(arguments));
-      return;
-    }
-
     callback.apply(this, arguments);
   }
 
   function next() {
-    if (isDone) {
-      return;
-    }
+    if (isDone) return;
 
-    hasNext = true;
-    if (sync) {
-      // Iterate instead of recursing if possible.
-      return;
-    }
-
-    sync = true;
-
-    while (!isDone && currentTurn < turns && hasNext) {
-      hasNext = false;
+    if (currentTurn < turns) {
       work.call(this, currentTurn++, next, done);
-    }
-
-    sync = false;
-
-    if (isDone) {
-      // This means the loop finished synchronously.
-      callback.apply(this, doneArgs);
-      return;
-    }
-
-    if (currentTurn >= turns && hasNext) {
-      isDone = true;
-      callback();
+    } else {
+      done.apply(this, arguments);
     }
   }
 
   next();
 }
-},{}],17:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 (function (process){
 /*eslint-disable no-empty */
 'use strict';
@@ -1606,8 +1880,7 @@ var _warning = require('warning');
 var _warning2 = _interopRequireDefault(_warning);
 
 var KeyPrefix = '@@History/';
-var QuotaExceededErrors = ['QuotaExceededError', 'QUOTA_EXCEEDED_ERR'];
-
+var QuotaExceededError = 'QuotaExceededError';
 var SecurityError = 'SecurityError';
 
 function createKey(key) {
@@ -1616,11 +1889,7 @@ function createKey(key) {
 
 function saveState(key, state) {
   try {
-    if (state == null) {
-      window.sessionStorage.removeItem(createKey(key));
-    } else {
-      window.sessionStorage.setItem(createKey(key), JSON.stringify(state));
-    }
+    window.sessionStorage.setItem(createKey(key), JSON.stringify(state));
   } catch (error) {
     if (error.name === SecurityError) {
       // Blocking cookies in Chrome/Firefox/Safari throws SecurityError on any
@@ -1630,7 +1899,7 @@ function saveState(key, state) {
       return;
     }
 
-    if (QuotaExceededErrors.indexOf(error.name) >= 0 && window.sessionStorage.length === 0) {
+    if (error.name === QuotaExceededError && window.sessionStorage.length === 0) {
       // Safari "private mode" throws QuotaExceededError.
       process.env.NODE_ENV !== 'production' ? _warning2['default'](false, '[history] Unable to save state; sessionStorage is not available in Safari private mode') : undefined;
 
@@ -1667,7 +1936,7 @@ function readState(key) {
 }
 }).call(this,require('_process'))
 
-},{"_process":28,"warning":29}],18:[function(require,module,exports){
+},{"_process":32,"warning":33}],21:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1732,6 +2001,11 @@ function supportsHistory() {
   if ((ua.indexOf('Android 2.') !== -1 || ua.indexOf('Android 4.0') !== -1) && ua.indexOf('Mobile Safari') !== -1 && ua.indexOf('Chrome') === -1 && ua.indexOf('Windows Phone') === -1) {
     return false;
   }
+  // FIXME: Work around our browser history not working correctly on Chrome
+  // iOS: https://github.com/rackt/react-router/issues/2565
+  if (ua.indexOf('CriOS') !== -1) {
+    return false;
+  }
   return window.history && 'pushState' in window.history;
 }
 
@@ -1743,64 +2017,13 @@ function supportsGoWithoutReloadUsingHash() {
   var ua = navigator.userAgent;
   return ua.indexOf('Firefox') === -1;
 }
-},{}],19:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
 var canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
 exports.canUseDOM = canUseDOM;
-},{}],20:[function(require,module,exports){
-(function (process){
-'use strict';
-
-exports.__esModule = true;
-exports.extractPath = extractPath;
-exports.parsePath = parsePath;
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _warning = require('warning');
-
-var _warning2 = _interopRequireDefault(_warning);
-
-function extractPath(string) {
-  var match = string.match(/^https?:\/\/[^\/]*/);
-
-  if (match == null) return string;
-
-  return string.substring(match[0].length);
-}
-
-function parsePath(path) {
-  var pathname = extractPath(path);
-  var search = '';
-  var hash = '';
-
-  process.env.NODE_ENV !== 'production' ? _warning2['default'](path === pathname, 'A path must be pathname + search + hash only, not a fully qualified URL like "%s"', path) : undefined;
-
-  var hashIndex = pathname.indexOf('#');
-  if (hashIndex !== -1) {
-    hash = pathname.substring(hashIndex);
-    pathname = pathname.substring(0, hashIndex);
-  }
-
-  var searchIndex = pathname.indexOf('?');
-  if (searchIndex !== -1) {
-    search = pathname.substring(searchIndex);
-    pathname = pathname.substring(0, searchIndex);
-  }
-
-  if (pathname === '') pathname = '/';
-
-  return {
-    pathname: pathname,
-    search: search,
-    hash: hash
-  };
-}
-}).call(this,require('_process'))
-
-},{"_process":28,"warning":29}],21:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -1816,8 +2039,6 @@ var _invariant2 = _interopRequireDefault(_invariant);
 
 var _Actions = require('./Actions');
 
-var _PathUtils = require('./PathUtils');
-
 var _ExecutionEnvironment = require('./ExecutionEnvironment');
 
 var _DOMUtils = require('./DOMUtils');
@@ -1827,6 +2048,10 @@ var _DOMStateStorage = require('./DOMStateStorage');
 var _createDOMHistory = require('./createDOMHistory');
 
 var _createDOMHistory2 = _interopRequireDefault(_createDOMHistory);
+
+var _parsePath = require('./parsePath');
+
+var _parsePath2 = _interopRequireDefault(_parsePath);
 
 /**
  * Creates and returns a history object that uses HTML5's history API
@@ -1864,7 +2089,7 @@ function createBrowserHistory() {
       if (isSupported) window.history.replaceState(_extends({}, historyState, { key: key }), null, path);
     }
 
-    var location = _PathUtils.parsePath(path);
+    var location = _parsePath2['default'](path);
 
     return history.createLocation(_extends({}, location, { state: state }), undefined, key);
   }
@@ -1980,7 +2205,7 @@ exports['default'] = createBrowserHistory;
 module.exports = exports['default'];
 }).call(this,require('_process'))
 
-},{"./Actions":15,"./DOMStateStorage":17,"./DOMUtils":18,"./ExecutionEnvironment":19,"./PathUtils":20,"./createDOMHistory":22,"_process":28,"invariant":27}],22:[function(require,module,exports){
+},{"./Actions":18,"./DOMStateStorage":20,"./DOMUtils":21,"./ExecutionEnvironment":22,"./createDOMHistory":24,"./parsePath":29,"_process":32,"invariant":31}],24:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -2024,8 +2249,8 @@ exports['default'] = createDOMHistory;
 module.exports = exports['default'];
 }).call(this,require('_process'))
 
-},{"./DOMUtils":18,"./ExecutionEnvironment":19,"./createHistory":23,"_process":28,"invariant":27}],23:[function(require,module,exports){
-(function (process){
+},{"./DOMUtils":21,"./ExecutionEnvironment":22,"./createHistory":25,"_process":32,"invariant":31}],25:[function(require,module,exports){
+//import warning from 'warning'
 'use strict';
 
 exports.__esModule = true;
@@ -2034,15 +2259,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _warning = require('warning');
-
-var _warning2 = _interopRequireDefault(_warning);
-
 var _deepEqual = require('deep-equal');
 
 var _deepEqual2 = _interopRequireDefault(_deepEqual);
-
-var _PathUtils = require('./PathUtils');
 
 var _AsyncUtils = require('./AsyncUtils');
 
@@ -2055,6 +2274,10 @@ var _createLocation3 = _interopRequireDefault(_createLocation2);
 var _runTransitionHook = require('./runTransitionHook');
 
 var _runTransitionHook2 = _interopRequireDefault(_runTransitionHook);
+
+var _parsePath = require('./parsePath');
+
+var _parsePath2 = _interopRequireDefault(_parsePath);
 
 var _deprecate = require('./deprecate');
 
@@ -2078,8 +2301,8 @@ function createHistory() {
   var finishTransition = options.finishTransition;
   var saveState = options.saveState;
   var go = options.go;
-  var getUserConfirmation = options.getUserConfirmation;
   var keyLength = options.keyLength;
+  var getUserConfirmation = options.getUserConfirmation;
 
   if (typeof keyLength !== 'number') keyLength = DefaultKeyLength;
 
@@ -2179,7 +2402,7 @@ function createHistory() {
           var prevPath = createPath(location);
           var nextPath = createPath(nextLocation);
 
-          if (nextPath === prevPath && _deepEqual2['default'](location.state, nextLocation.state)) nextLocation.action = _Actions.REPLACE;
+          if (nextPath === prevPath) nextLocation.action = _Actions.REPLACE;
         }
 
         if (finishTransition(nextLocation) !== false) updateLocation(nextLocation);
@@ -2236,9 +2459,13 @@ function createHistory() {
     var key = arguments.length <= 2 || arguments[2] === undefined ? createKey() : arguments[2];
 
     if (typeof action === 'object') {
-      process.env.NODE_ENV !== 'production' ? _warning2['default'](false, 'The state (2nd) argument to history.createLocation is deprecated; use a ' + 'location descriptor instead') : undefined;
+      //warning(
+      //  false,
+      //  'The state (2nd) argument to history.createLocation is deprecated; use a ' +
+      //  'location descriptor instead'
+      //)
 
-      if (typeof location === 'string') location = _PathUtils.parsePath(location);
+      if (typeof location === 'string') location = _parsePath2['default'](location);
 
       location = _extends({}, location, { state: action });
 
@@ -2278,14 +2505,14 @@ function createHistory() {
 
   // deprecated
   function pushState(state, path) {
-    if (typeof path === 'string') path = _PathUtils.parsePath(path);
+    if (typeof path === 'string') path = _parsePath2['default'](path);
 
     push(_extends({ state: state }, path));
   }
 
   // deprecated
   function replaceState(state, path) {
-    if (typeof path === 'string') path = _PathUtils.parsePath(path);
+    if (typeof path === 'string') path = _parsePath2['default'](path);
 
     replace(_extends({ state: state }, path));
   }
@@ -2314,10 +2541,8 @@ function createHistory() {
 
 exports['default'] = createHistory;
 module.exports = exports['default'];
-}).call(this,require('_process'))
-
-},{"./Actions":15,"./AsyncUtils":16,"./PathUtils":20,"./createLocation":24,"./deprecate":25,"./runTransitionHook":26,"_process":28,"deep-equal":12,"warning":29}],24:[function(require,module,exports){
-(function (process){
+},{"./Actions":18,"./AsyncUtils":19,"./createLocation":26,"./deprecate":27,"./parsePath":29,"./runTransitionHook":30,"deep-equal":15}],26:[function(require,module,exports){
+//import warning from 'warning'
 'use strict';
 
 exports.__esModule = true;
@@ -2326,13 +2551,11 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _warning = require('warning');
-
-var _warning2 = _interopRequireDefault(_warning);
-
 var _Actions = require('./Actions');
 
-var _PathUtils = require('./PathUtils');
+var _parsePath = require('./parsePath');
+
+var _parsePath2 = _interopRequireDefault(_parsePath);
 
 function createLocation() {
   var location = arguments.length <= 0 || arguments[0] === undefined ? '/' : arguments[0];
@@ -2341,10 +2564,14 @@ function createLocation() {
 
   var _fourthArg = arguments.length <= 3 || arguments[3] === undefined ? null : arguments[3];
 
-  if (typeof location === 'string') location = _PathUtils.parsePath(location);
+  if (typeof location === 'string') location = _parsePath2['default'](location);
 
   if (typeof action === 'object') {
-    process.env.NODE_ENV !== 'production' ? _warning2['default'](false, 'The state (2nd) argument to createLocation is deprecated; use a ' + 'location descriptor instead') : undefined;
+    //warning(
+    //  false,
+    //  'The state (2nd) argument to createLocation is deprecated; use a ' +
+    //  'location descriptor instead'
+    //)
 
     location = _extends({}, location, { state: action });
 
@@ -2369,9 +2596,37 @@ function createLocation() {
 
 exports['default'] = createLocation;
 module.exports = exports['default'];
-}).call(this,require('_process'))
+},{"./Actions":18,"./parsePath":29}],27:[function(require,module,exports){
+//import warning from 'warning'
 
-},{"./Actions":15,"./PathUtils":20,"_process":28,"warning":29}],25:[function(require,module,exports){
+"use strict";
+
+exports.__esModule = true;
+function deprecate(fn) {
+  return fn;
+  //return function () {
+  //  warning(false, '[history] ' + message)
+  //  return fn.apply(this, arguments)
+  //}
+}
+
+exports["default"] = deprecate;
+module.exports = exports["default"];
+},{}],28:[function(require,module,exports){
+"use strict";
+
+exports.__esModule = true;
+function extractPath(string) {
+  var match = string.match(/^https?:\/\/[^\/]*/);
+
+  if (match == null) return string;
+
+  return string.substring(match[0].length);
+}
+
+exports["default"] = extractPath;
+module.exports = exports["default"];
+},{}],29:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -2383,18 +2638,43 @@ var _warning = require('warning');
 
 var _warning2 = _interopRequireDefault(_warning);
 
-function deprecate(fn, message) {
-  return function () {
-    process.env.NODE_ENV !== 'production' ? _warning2['default'](false, '[history] ' + message) : undefined;
-    return fn.apply(this, arguments);
+var _extractPath = require('./extractPath');
+
+var _extractPath2 = _interopRequireDefault(_extractPath);
+
+function parsePath(path) {
+  var pathname = _extractPath2['default'](path);
+  var search = '';
+  var hash = '';
+
+  process.env.NODE_ENV !== 'production' ? _warning2['default'](path === pathname, 'A path must be pathname + search + hash only, not a fully qualified URL like "%s"', path) : undefined;
+
+  var hashIndex = pathname.indexOf('#');
+  if (hashIndex !== -1) {
+    hash = pathname.substring(hashIndex);
+    pathname = pathname.substring(0, hashIndex);
+  }
+
+  var searchIndex = pathname.indexOf('?');
+  if (searchIndex !== -1) {
+    search = pathname.substring(searchIndex);
+    pathname = pathname.substring(0, searchIndex);
+  }
+
+  if (pathname === '') pathname = '/';
+
+  return {
+    pathname: pathname,
+    search: search,
+    hash: hash
   };
 }
 
-exports['default'] = deprecate;
+exports['default'] = parsePath;
 module.exports = exports['default'];
 }).call(this,require('_process'))
 
-},{"_process":28,"warning":29}],26:[function(require,module,exports){
+},{"./extractPath":28,"_process":32,"warning":33}],30:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -2422,7 +2702,7 @@ exports['default'] = runTransitionHook;
 module.exports = exports['default'];
 }).call(this,require('_process'))
 
-},{"_process":28,"warning":29}],27:[function(require,module,exports){
+},{"_process":32,"warning":33}],31:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -2478,7 +2758,7 @@ module.exports = invariant;
 
 }).call(this,require('_process'))
 
-},{"_process":28}],28:[function(require,module,exports){
+},{"_process":32}],32:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -2571,7 +2851,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],29:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -2636,7 +2916,7 @@ module.exports = warning;
 
 }).call(this,require('_process'))
 
-},{"_process":28}]},{},[8])
+},{"_process":32}]},{},[10])
 
 
 //# sourceMappingURL=bundle.js.map

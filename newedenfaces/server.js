@@ -13,7 +13,18 @@ var path = require('path');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
 
+
+var mongoose = require('mongoose');
+var Character = require('./models/chracter');
+var config = require('./config');
+
 var app = express();
+
+
+mongoose.connect(config.database);
+mongoose.connection.on('error', function() {
+	console.info('Error: Could not connect to MongoDB.  Di you forget to run `mongod`?');
+})
 
 app.set('port', process.env.PORT || 3000);
 app.use(logger('dev'));
@@ -22,6 +33,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // middleware for rendering React on server side
+
 app.use(function(req, res) {
 	Router.match({ routes: routes.default, location: req.url }, function(err, redirectLocation, renderProps) {
  		if (err) {
@@ -29,7 +41,7 @@ app.use(function(req, res) {
     	} else if (redirectLocation) {
       		res.status(302).redirect(redirectLocation.pathname + redirectLocation.search)
     	} else if (renderProps) {
-      		var html = ReactDOM.renderToString(React.createElement(Router.RouterContext, renderProps));
+      		var html = ReactDOM.renderToString(React.createElement(Router.RoutingContext, renderProps));
       		var page = swig.renderFile('views/index.html', { html: html });
       		res.status(200).send(page);
     	} else {
@@ -41,6 +53,29 @@ app.use(function(req, res) {
 
 
 
-app.listen(app.get('port'), function() {
+/**
+ * Socket.io stuff.
+ * In a nutshell, when a WebSocket connection is established, it increments the onlineUsers count 
+ * (global variable) and broadcasts a message — “Hey, I have this many online visitors now.”. When 
+ * someone closes the browser and leaves, the onlineUsers count is decremented and it yet again 
+ * broadcasts a message “Hey, someone just left, I have this many online visitors now.”.
+ */
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
+var onlineUsers = 0;
+
+io.sockets.on('connection', function(socket) {
+	onlineUsers++;
+	
+	io.sockets.emit('onlineUsers', { onlineUsers: onlineUsers });
+
+	socket.on('disconnect', function() {
+		onlineUsers--;
+		io.sockets.emit('onlineUsers', { onlineUsers: onlineUsers });
+	});
+});
+
+
+server.listen(app.get('port'), function() {
 	console.log('Express server listening on port ' + app.get('port'));
 });
