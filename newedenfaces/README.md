@@ -5,8 +5,11 @@ run "gulp" in one tab/console window
 run "npm run watch" in another tab/console
 run "mongod" to have mongodb running
 
+You can import newedenfaces.bson
+$ mongorestore newedenfaces.bson -d nef -c characters
 
-Tutorial left off at: Step 13
+
+Tutorial left off at: Step 14 Home Component
 
 
 package.json stuff:
