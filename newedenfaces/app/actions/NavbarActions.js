@@ -1,5 +1,5 @@
 import alt from '../alt';
-import { assiogn } from 'underscore';
+import { assign } from 'underscore';
 
 class NavbarActions {
 	

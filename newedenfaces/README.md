@@ -9,7 +9,7 @@ You can import newedenfaces.bson
 $ mongorestore newedenfaces.bson -d nef -c characters
 
 
-Tutorial left off at: Step 16 Character (Profile) Component
+Tutorial left off at: Step 17 Top 100 Components
 
 
 package.json stuff:
