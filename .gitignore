@@ -58,4 +58,6 @@ Temporary Items
 /newedenfaces/bower_components
 /gulptest/node_modules
 /chirp/node_modules
+/angular2-quickstart/node_modules
+/angular2-tour-of-heroes/node_modules
 
